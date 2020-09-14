@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./templatemain.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">    
+
+    <ui:define name="content"> 
+
+        <p:growl id="grwlErrores"/>
+        <p:diagram id="pnlArbol" value="#{arbolBinarioControlador.model}" style="height:400px" styleClass="ui-widget-content" />
+
+        <h:form>
+            <!-- Div 1 -->
+            <p:panel header="Panel Nuevo Nodo">
+                <p:outputLabel value="Dato:"/>
+                <p:inputText required="true" value="#{arbolBinarioControlador.dato}"/>
+               <!-- Agregar --> 
+                <p:commandButton ajax="false" 
+                                 value="Agregar" 
+                                 action="#{arbolBinarioControlador.adicionarNodo()}"
+                                 update="@all" />
+                
+                
+               
+               <!-- Buscar Padre -->  
+                <p:commandButton value="Buscar Padre"
+                                 update="@all"
+                                 ajax="false"
+                                 action="#{arbolBinarioControlador.arbol.darPadre(hijo)}"/>
+                
+                <!-- Borrar  -->
+                
+                <p:commandButton value="Borrar" type="button" onclick="PF('dlg2').show();" />
+                <p:dialog header="Borrar" widgetVar="dlg2" minHeight="40">
+                    <h:outputText value="Valor a Borrar: " />
+                        <p:inputText required="true" value="#{arbolBinarioControlador.dato}"/>
+                        <p:commandButton ajax="false" 
+                                         value="Borrar" 
+                                         action="#{arbolBinarioControlador.borrar()}"
+                                         update="@all" />
+                </p:dialog>        
+                
+                
+               <!-- Buscar --> 
+               <p:commandButton value="Buscar" update="Buscar" oncomplete="PF('dlg').show()" />
+                <p:dialog header="Buscar" widgetVar="dlg" showEffect="fold" hideEffect="fold">
+                    <h:panelGrid id="Buscar" columns="2" cellpadding="5">
+                        <h:outputText value="Valor a Buscar: " />
+                        <p:inputText required="true" value="#{arbolBinarioControlador.dato}"/>
+                        <p:commandButton ajax="false" 
+                                         value="Buscar" 
+                                         action="#{arbolBinarioControlador.buscar()}"
+                                         update="@all"
+                                        />
+                    </h:panelGrid>
+                </p:dialog> 
+               
+                <br/>
+                <br/>
+                
+             <!-- Div 2 -->   
+                
+               <!-- InOrden -->
+                <p:commandButton id="inOrdenBtn" value="InOrden" type="button" />
+                <p:overlayPanel id="inOrdenPanel" for="inOrdenBtn" hideEffect="fade" dynamic="true" style="width:600px" modal="true">
+                    <p:dataTable var="nodo" value="#{arbolBinarioControlador.arbol.inOrden()}" rows="10" paginator="true">
+                        <p:column headerText="InOrden">
+                            <h:outputText value="#{nodo}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:overlayPanel>
+                
+                <!-- PreOrden -->
+                
+                <p:commandButton id="preOrdenBtn" value="PreOrden" type="button" />
+                <p:overlayPanel id="preOrdenPanel" for="preOrdenBtn" hideEffect="fade" dynamic="true" style="width:600px" modal="true">
+                    <p:dataTable var="nodo" value="#{arbolBinarioControlador.arbol.preOrden()}" rows="10" paginator="true">
+                        <p:column headerText="PreOrden">
+                            <h:outputText value="#{nodo}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:overlayPanel>
+                
+               <!-- PostOrden -->
+                <p:commandButton id="postOrdenBtn" value="PostOrden" type="button" />
+                <p:overlayPanel id="postOrdenPanel" for="postOrdenBtn" hideEffect="fade" dynamic="true" style="width:600px" modal="true">
+                    <p:dataTable var="nodo" value="#{arbolBinarioControlador.arbol.postOrden()}" rows="10" paginator="true">
+                        <p:column headerText="PostOrden">
+                            <h:outputText value="#{nodo}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:overlayPanel>
+                
+                <!-- Por Niveles -->
+                
+                 <p:commandButton id="porNivelesBtn" value="Por Niveles" type="button" />
+                <p:overlayPanel id="porNivelesPanel" for="porNivelesBtn" hideEffect="fade" dynamic="true" style="width:600px" modal="true">
+                    <p:dataTable var="nodo" value="#{arbolBinarioControlador.arbol.impNiveles()}" rows="10" paginator="true">
+                        <p:column headerText="Por Niveles">
+                            <h:outputText value="#{nodo}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:overlayPanel>
+                
+                <!-- Nivel Ordenado --> 
+                
+                 <p:commandButton id="nivelOrdenadoBtn" value="Nivel Ordenado" type="button" />
+                <p:overlayPanel id="nivelOrdenadoPanel" for="nivelOrdenadoBtn" hideEffect="fade" dynamic="true" style="width:600px" modal="true">
+                    <p:dataTable var="nodo" value="#{arbolBinarioControlador.arbol.impNiveles()}" rows="10" paginator="true">
+                        <p:column headerText="Nivel Ordenado">
+                            <h:outputText value="#{nodo}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:overlayPanel>
+                 
+                 <!-- Hojas -->  
+                 
+                <p:commandButton id="hojasBtn" value="Hojas" type="button"  />
+                
+                <p:overlayPanel id="hojasPanel" for="hojasBtn" hideEffect="fade" dynamic="true" style="width:600px" modal="true">
+                    <p:dataTable var="nodo" value="#{arbolBinarioControlador.arbol.obtenerHojas()}" rows="10" paginator="true">
+                        <p:column headerText="Hojas">
+                            <h:outputText value="#{nodo}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:overlayPanel>
+                
+                <!-- Borrar Mayor -->
+                
+                <p:commandButton value="Borrar Mayor" update="@all" ajax="false" action="#{arbolBinarioControlador.borrarMayor()}"/>
+                
+                <!-- Borrar Menor -->
+                
+                <p:commandButton value="Borrar Menor" update="@all" ajax="false" action="#{arbolBinarioControlador.borrarMenor()}"/>
+                
+                <!-- Podar -->
+                <p:commandButton value="Podar" update="@all" ajax="false" action="#{arbolBinarioControlador.podar()}"/>
+                
+                <p:commandButton value="Cambiar Valor" type="button" onclick="PF('dlg1').show();" />
+                <p:dialog header="Cambiar Valor" widgetVar="dlg1" minHeight="40">
+                    <h:outputText value="Valor a Cambiar: " />
+                        <p:inputText required="true" value="#{arbolBinarioControlador.dato}"/>
+                        <p:commandButton ajax="false" 
+                                         value="Cambiar" 
+                                         action="#{arbolBinarioControlador.cambiarValor()}"
+                                         update="@all" />
+                </p:dialog> 
+                
+                  
+
+                <br/>
+                
+               
+                
+            </p:panel>
+        </h:form>
+        <h:form>
+            <p:panel header="Llenar árbol">
+                <p:inputTextarea required="true" cols="40" value="#{arbolBinarioControlador.datoscsv}"/>
+                <p:commandButton value="LLenar Arbol" action="#{arbolBinarioControlador.extraerDatos()}"
+                                 update="@all" ajax="false"/>
+                
+
+                
+                
+            </p:panel>
+        </h:form>
+        <h:form>
+
+            <p:panel header="Terminados en">
+                <p:inputText required="true" value="#{arbolBinarioControlador.terminado}"/>
+                <p:commandButton value="Buscar Terminados" action="#{arbolBinarioControlador.buscarTerminadosEn()}"
+                                 update="@all" ajax="false"/>
+                <p:commandButton value="Obtener árbol terminados" 
+                                 action="#{arbolBinarioControlador.encontrarTerminadosEn()}"
+                                 update="@all" ajax="false"/>
+            </p:panel>
+        </h:form>
+        <p:diagram id="pnlArbolTerminados" value="#{arbolBinarioControlador.modelArbol2}" style="height:400px" styleClass="ui-widget-content" />
+    </ui:define>
+</ui:composition>
