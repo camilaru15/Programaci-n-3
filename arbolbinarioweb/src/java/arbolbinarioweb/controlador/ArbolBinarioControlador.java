@@ -33,12 +33,13 @@ public class ArbolBinarioControlador implements Serializable {
 
     private DefaultDiagramModel model;
     private DefaultDiagramModel modelArbol2;
+    private int datoMultiplicar;
 
     private ArbolBinario arbol = new ArbolBinario();
     private int dato;
     private boolean verInOrden = false;
     
-
+    
     private String datoscsv = "18,15,13,17,8,14,-8,10,59,28,80,78,90";
     private int terminado;
     private ArbolBinario arbolTerminados = new ArbolBinario();
@@ -53,6 +54,14 @@ public class ArbolBinarioControlador implements Serializable {
 
     public int getTerminado() {
         return terminado;
+    }
+
+    public int getDatoMultiplicar() {
+        return datoMultiplicar;
+    }
+
+    public void setDatoMultiplicar(int datoMultiplicar) {
+        this.datoMultiplicar = datoMultiplicar;
     }
 
     public void setTerminado(int terminado) {
@@ -266,6 +275,11 @@ public class ArbolBinarioControlador implements Serializable {
         public void cambiarValor(){
           arbol.cambiar();
           pintarArbol();
+        }
+        
+        public void multiplicar(){
+            arbol.multiplicarArbol(datoMultiplicar);
+            pintarArbol();
         }
 
     private void pintarArbolTerminados(Nodo reco, DefaultDiagramModel model, Element padre, int x, int y) {

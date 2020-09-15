@@ -146,12 +146,17 @@
                                          action="#{arbolBinarioControlador.cambiarValor()}"
                                          update="@all" />
                 </p:dialog> 
-                
-                  
+                               
 
                 <br/>
+                <br/>
                 
-               
+                <p:outputLabel value="Dato:"/>
+                <p:inputText required="true" value="#{arbolBinarioControlador.datoMultiplicar}"/>
+                <p:commandButton value="Multiplicar" update="@all" ajax="false" action="#{arbolBinarioControlador.multiplicar()}"/>
+                
+      
+                
                 
             </p:panel>
         </h:form>
@@ -160,9 +165,7 @@
                 <p:inputTextarea required="true" cols="40" value="#{arbolBinarioControlador.datoscsv}"/>
                 <p:commandButton value="LLenar Arbol" action="#{arbolBinarioControlador.extraerDatos()}"
                                  update="@all" ajax="false"/>
-                
-
-                
+                              
                 
             </p:panel>
         </h:form>
