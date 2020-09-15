@@ -50,7 +50,7 @@
                         <p:inputText required="true" value="#{arbolBinarioControlador.dato}"/>
                         <p:commandButton ajax="false" 
                                          value="Buscar" 
-                                         action="#{arbolBinarioControlador.buscar()}"
+                                         action="#{ArbolBinario.podarNivelDos}"
                                          update="@all"
                                         />
                     </h:panelGrid>
@@ -147,8 +147,16 @@
                                          update="@all" />
                 </p:dialog> 
                 
-                  
-
+                <!-- Podar nivel -->                                 
+                <p:commandButton value="Nivel a podar" type="button" onclick="PF('dlg1').show();"/>
+                <p:dialog header="Nivel a podar" widgetVar="dlg1" minHeight="40">
+                    <h:outputText value="Nivel a podar " />
+                        <p:inputText required="true" value="#{arbolBinarioControlador.dato}"/>
+                        <p:commandButton ajax="false" 
+                                         value="Cambiar" 
+                                         action="#{ArbolBinario.podarNivelDos}"
+                                         update="@all" />                
+                </p:dialog>
                 <br/>
                 
                

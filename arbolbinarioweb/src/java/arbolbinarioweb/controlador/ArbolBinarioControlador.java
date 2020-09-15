@@ -262,6 +262,11 @@ public class ArbolBinarioControlador implements Serializable {
            arbol.podar();
            pintarArbol();
         }
+        
+        public void podarNivel(){
+            arbol.podarNivel(); 
+            pintarArbol();
+        }
 
         public void cambiarValor(){
           arbol.cambiar();
@@ -290,5 +295,8 @@ public class ArbolBinarioControlador implements Serializable {
             pintarArbolTerminados(reco.getDerecha(), model, elementHijo, x + 5, y + 5);
         }
     }
+    
+    
+    
 
 }
