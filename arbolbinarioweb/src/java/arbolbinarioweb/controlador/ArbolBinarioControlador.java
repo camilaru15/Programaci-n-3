@@ -263,10 +263,10 @@ public class ArbolBinarioControlador implements Serializable {
            pintarArbol();
         }
         
-        public void podarNivel(){
-            arbol.podarNivel(); 
-            pintarArbol();
-        }
+//        public void podarNivel(){
+//            arbol.podarNivel(); 
+//            pintarArbol();
+//        }
 
         public void cambiarValor(){
           arbol.cambiar();
