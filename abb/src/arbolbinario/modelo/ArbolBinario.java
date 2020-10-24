@@ -208,6 +208,29 @@ public class ArbolBinario {
         }
         
     }
+    
+     /**
+     * Método que retorna la cantidad de nodos del arbol
+     *
+     * @return int cantidad de nodos
+     */                             // raiz
+    public int contarNodos() //reco
+    {
+        return this.contarNodos(raiz);
+    }
+
+    public int contarNodos(Nodo reco) {
+        //Hacen el dllo del contar
+        if (reco == null) {
+            return 0;
+        }
+        if (reco.isHoja()) {
+            return 1;
+        } else {
+            return 1 + contarNodos(reco.getIzquierda()) + contarNodos(reco.getDerecha());
+        }
+    }
+    
      
     public boolean buscar(int x) {
         return (buscar(this.raiz, x));
@@ -282,6 +305,33 @@ public class ArbolBinario {
         return x;
 
     }
+   
+    /**
+     * Método que retorna la suma de los valos de un arbol a partir del nodo
+     * dado
+     *
+     * @param ref Nodo que se toma como raiz para sumar todos sus descendientes
+     * @return int Valor sumar todos los nodos a partir de la referencia
+     */
+    public int sumarNodos(Nodo ref) {
+        if (ref != null) {
+            return ref.getDato() + sumarNodos(ref.getIzquierda())
+                    + sumarNodos(ref.getDerecha());
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Método que retorna la suma total del arbol
+     *
+     * @return int Valor suma total del árbol
+     */
+    public int sumarArbol() {
+        return sumarNodos(raiz);
+    }
+
+    
 
      //buscar min
     private Nodo buscarMin(Nodo nodo) {
@@ -387,10 +437,53 @@ public class ArbolBinario {
 
     private void cambiar(Nodo reco, int nivel) {
         if (reco != null) {
-            reco.setDato(reco.getDato() * 3);
+            reco.setDato(reco.getDato() * 2);
             cambiar(reco.getIzquierda(), nivel + 1);
             //System.out.print(reco.getDato() + " Nivel: (" + nivel + ") ,");
             cambiar(reco.getDerecha(), nivel + 1);
+        }
+    }
+    
+    /**
+     * Método que buscar un nodo a partir de una referencia
+     *
+     * @param datobuscar entero que recibe el número a buscar
+     * @param ref Nodo a partir del cual busco el dato
+     * @return Retrona todo el arbol a partir del Nodo ubicado
+     *
+     */
+    public Nodo buscarNodo(int datobuscar, Nodo ref) throws ArbolBinarioException
+    {
+        if (ref != null) {
+            if (ref.getDato() == datobuscar) {
+                return ref;
+            } else {
+                if (datobuscar < ref.getDato()) {
+                    return buscarNodo(datobuscar, ref.getIzquierda());
+                } else {
+                    return buscarNodo(datobuscar, ref.getDerecha());
+                }
+            }
+        } else {
+            //Ojoo
+            //return null;
+            throw new ArbolBinarioException("El dato buscado no existe");
+        }
+    }
+    
+    
+    public boolean multiplicarArbol( int multiplicar) {
+            multiplicarArbol(raiz, 1, multiplicar);
+            //System.out.println();
+            return true;
+    }
+    
+     private void multiplicarArbol(Nodo reco, int nivel, int multiplicar) {
+        if (reco != null) {
+            reco.setDato(reco.getDato() * multiplicar);
+             multiplicarArbol(reco.getIzquierda(), nivel + 1, multiplicar);
+            //System.out.print(reco.getDato() + " Nivel: (" + nivel + ") ,");
+             multiplicarArbol(reco.getDerecha(), nivel + 1, multiplicar);
         }
     }
     
