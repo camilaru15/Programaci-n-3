@@ -72,10 +72,24 @@ public class ArbolSumaControlador implements Serializable {
     {
         ///Construir con base en el abb el arbol sumas
         //Recorrido del arbol abb y llenar mi arbol sumas
-        JsfUtil.addSuccessMessage("Llego arbol cant "+abb.contarNodos());
+        //JsfUtil.addSuccessMessage("Llego arbol cant "+abb.contarNodos());
+       arbol = new ArbolBinario();
+       recorrerAbbPreOrden(abb.getRaiz());
+       pintarArbol();
+       
     }
     
-    
+    private void recorrerAbbPreOrden(arbolbinario.modelo.Nodo temp){
+        if(temp !=null){
+        try{
+        arbol.adicionarNodo(new Dato(temp.getDato()), arbol.getRaiz());
+        recorrerAbbPreOrden(temp.getIzquierda());
+        recorrerAbbPreOrden(temp.getDerecha());       
+        } catch (ArbolBinarioException ex){
+        JsfUtil.addErrorMessage(ex.getMessage());
+        }
+        }
+    }
     
 
     public int getNumero() {
