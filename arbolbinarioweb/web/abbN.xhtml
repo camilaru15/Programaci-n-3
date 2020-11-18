@@ -1,61 +1,46 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns="http://www.w3.org/1999/xhtml"
                 template="./templatemain.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">    
 
     <ui:define name="content"> 
+
         <p:growl id="grwlErrores"/>
-        <p:diagram id="pnlArbol" value="#{arbolBinarioNcontrolador.model}" style="height:400px" styleClass="ui-widget-content" />
-         <h:form>
-             <p:panel header="Panel Añadir Prendas" >
-                <p:outputLabel value="Id Prenda:"/>
+        
+        
+            <p:diagram id="diagrama" value="#{arbolnarioControlador.model}" style="height:400px" /> 
+            
+        
+        <h:form>
+            <p:panel header="Panel Nuevo Nodo">
+                
+               <br/>
+                <p:outputLabel value="ID jefe:"/>
                 <br/>
-                <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.idPrenda}"/>
+                <p:inputText required="true" value="#{arbolBinarioNcontrolador.padre}"/>
                 <br/><br/>
-                 <p:outputLabel value="Tipo de prenda:"/>
-                <br/>
-                <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.nombre}"/>
+                 <p:outputLabel value="ID empleado"/>
+                 <br/>
+                 <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.idPrenda}"/>
                 <br/><br/>
-               <h:panelGrid ><font></font>
-               <p:outputLabel value="Talla:" /><font></font>
-               <p:selectOneRadio id="console" value="#{arbolBinarioNcontrolador.prenda.talla}"><font></font>
-                     <f:selectItem itemLabel="XS" itemValue="XS" /><font></font>
-                     <f:selectItem itemLabel="S" itemValue="S" /><font></font>
-                     <f:selectItem itemLabel="M" itemValue="M" /><font></font>
-                     <f:selectItem itemLabel="L" itemValue="L" /><font></font>
-                     <f:selectItem itemLabel="XL" itemValue="XL" /><font></font>
-               </p:selectOneRadio><font></font>
-               </h:panelGrid>
+                 <p:outputLabel value="nombre del empleado:"/>
+                 <br/>
+                 <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.nombre}"/>
                 <br/><br/>
-                <p:outputLabel value="Color:"/>
-                <br/>
-                <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.color}"/>
-                <br/><br/>
-                 <p:outputLabel value="Precio:"/>
+                 <p:outputLabel value="Sueldo del empleado:"/>
                  <br/>
                  <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.precio}"/>
-                 <br/><br/>
-                 <p:commandButton ajax="false"  value="Agregar Prenda" action="#{arbolBinarioNcontrolador.adicionarPrenda()}"
-                                 update="@all" />
-              <br/>                                
-             </p:panel>
-        </h:form>
-        <h:form>
-            <p:panel>
-            <p:commandButton ajax="false"  value="Ver Prendas" action="#{arbolBinarioNcontrolador.buscarPrenda()}" update="@all" />  
-            <p:commandButton ajax="false"  value="Eliminar Prendas" action="#{arbolBinarioNcontrolador.podar()}" update="@all" /> 
-            <p:commandButton ajax="false"  value="Cambiar Prenda" action="#{arbolBinarioNcontrolador.cambiarPrenda()}" update="@all" />  
+                
+                <br/>
+                <p:commandButton ajax="false"  value="Agregar" action="#{arbolBinarioNcontrolador.guardarPrenda()}" update="@all" />
+              <br/>
+               
+                
             </p:panel>
         </h:form>
-        <h:form>
-            <p:panel>
-            <p:commandButton ajax="false"  value="Ordenar por Talla" action="#{arbolBinarioNcontrolador.ordenarPorTalla()}" update="@all" />  
-            <p:commandButton ajax="false"  value="Ordenar por Precio" action="#{arbolBinarioNcontrolador.ordenarPorPrecio()}" update="@all" />  
-           </p:panel>
-        </h:form>
-    </ui:define>
+     </ui:define>
+
 </ui:composition>

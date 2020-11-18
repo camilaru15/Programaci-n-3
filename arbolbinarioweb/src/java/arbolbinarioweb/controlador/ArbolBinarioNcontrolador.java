@@ -16,6 +16,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
+import javax.faces.context.FacesContext;
 import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.DefaultDiagramModel;
 import org.primefaces.model.diagram.Element;
@@ -30,34 +31,72 @@ import org.primefaces.model.diagram.endpoint.EndPointAnchor;
 @Named(value = "arbolBinarioNcontrolador")
 @Dependent
 public class ArbolBinarioNcontrolador {
- private DefaultDiagramModel model;
-        
+
         private ArbolN arbolN = new ArbolN();
-        private Prenda prenda;
+        private Prenda prenda = new Prenda();
         private List<Prenda> lista;
         private boolean verPrenda;
+        private DefaultDiagramModel model;
         private String padre;
         private int dato;
         private String texto;
-        private ArbolBinario arbolFinal = new ArbolBinario();
+         private DefaultDiagramModel modelArbol2;
+        private ArbolBinario arbolFinal = new ArbolBinario();    
 
-    public int getDato() {
-        return dato;
+    public DefaultDiagramModel getModelArbol2() {
+        return modelArbol2;
     }
 
-    public void setDato(int dato) {
-        this.dato = dato;
+    public void setModelArbol2(DefaultDiagramModel modelArbol2) {
+        this.modelArbol2 = modelArbol2;
     }
-        
+    
+    
+    public void pintarArbolTerminados() {
 
-    public DefaultDiagramModel getModel() {
-        return model;
+        modelArbol2 = new DefaultDiagramModel();
+        modelArbol2.setMaxConnections(-1);
+        modelArbol2.setConnectionsDetachable(false);
+        StraightConnector connector = new StraightConnector();
+        connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:10}");
+        connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
+        modelArbol2.setDefaultConnector(connector);
+        pintarArbolTerminados(arbolFinal.getRaiz(), modelArbol2, null, 30, 0);
+
     }
 
-    public void setModel(DefaultDiagramModel model) {
-        this.model = model;
+    private void pintarArbolTerminados(Nodo reco, DefaultDiagramModel model, Element padre, int x, int y) {
+
+        if (reco != null) {
+            Element elementHijo = new Element(reco.getDato());
+
+            elementHijo.setX(String.valueOf(x) + "em");
+            elementHijo.setY(String.valueOf(y) + "em");
+
+            if (padre != null) {
+                elementHijo.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
+                DotEndPoint conectorPadre = new DotEndPoint(EndPointAnchor.BOTTOM);
+                padre.addEndPoint(conectorPadre);
+                model.connect(new Connection(conectorPadre, elementHijo.getEndPoints().get(0)));
+
+            }
+
+            model.addElement(elementHijo);
+
+            pintarArbolTerminados(reco.getIzquierda(), model, elementHijo, x - 20, y + 5);
+            pintarArbolTerminados(reco.getDerecha(), model, elementHijo, x + 20, y + 5);
+        }
     }
 
+    @PostConstruct
+    private void inicializar() {
+        arbolN = new ArbolN();
+        texto= "Arbol n ario";
+    pintarArbolN();
+    }
+    public ArbolBinarioNcontrolador() {
+    }
+    
     public ArbolN getArbolN() {
         return arbolN;
     }
@@ -66,6 +105,14 @@ public class ArbolBinarioNcontrolador {
         this.arbolN = arbolN;
     }
 
+    public int getDato() {
+        return dato;
+    }
+
+    public void setDato(int dato) {
+        this.dato = dato;
+    }
+    
     public Prenda getPrenda() {
         return prenda;
     }
@@ -105,52 +152,9 @@ public class ArbolBinarioNcontrolador {
     public void setTexto(String texto) {
         this.texto = texto;
     }
-     public void pintarArbolTerminados() {
-
-        model= new DefaultDiagramModel();
-        model.setMaxConnections(-1);
-        model.setConnectionsDetachable(false);
-        StraightConnector connector = new StraightConnector();
-        connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:10}");
-        connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
-        model.setDefaultConnector(connector);
-        pintarArbolFinal(arbolFinal.getRaiz(), model, null, 30, 0);
-
-    }
-
-    private void pintarArbolFinal(Nodo reco, DefaultDiagramModel model, Element padre, int x, int y) {
-
-        if (reco != null) {
-            Element elementHijo = new Element(reco.getDato());
-
-            elementHijo.setX(String.valueOf(x) + "em");
-            elementHijo.setY(String.valueOf(y) + "em");
-
-            if (padre != null) {
-                elementHijo.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
-                DotEndPoint conectorPadre = new DotEndPoint(EndPointAnchor.BOTTOM);
-                padre.addEndPoint(conectorPadre);
-                model.connect(new Connection(conectorPadre, elementHijo.getEndPoints().get(0)));
-
-            }
-
-            model.addElement(elementHijo);
-
-            pintarArbolFinal(reco.getIzquierda(), model, elementHijo, x - 20, y + 5);
-            pintarArbolFinal(reco.getDerecha(), model, elementHijo, x + 20, y + 5);
-        }
-    }   
-     
-        
-    @PostConstruct
-    private void inicializar() {
-        arbolN = new ArbolN();
-        texto= "Arbol n ario";
-    pintarArbolN();
-    }
-    public ArbolBinarioNcontrolador() {
-    }
-        public void adicionarPrenda(){
+    
+    
+    public void adicionarPrenda(){
         try {
         arbolN.adicionarNodo(prenda, padre);
         prenda = new Prenda();
@@ -161,6 +165,13 @@ public class ArbolBinarioNcontrolador {
         }
     }
    
+    public DefaultDiagramModel getModel() {
+        return model;
+    }
+
+    public void setModel(DefaultDiagramModel model) {
+        this.model = model;
+    }
         public void pintarArbolN(){
             model = new DefaultDiagramModel();
             model.setMaxConnections(-1);
@@ -175,7 +186,7 @@ public class ArbolBinarioNcontrolador {
         private void pintarArbolN(NodoN reco, DefaultDiagramModel model, Element padre, int x, int y){
         
         if (reco != null) {
-            Element elementHijo = new Element(reco.getDato().getIdPrenda() + " " + reco.getDato().getNombre()+""+ reco.getDato().getTalla() + "" + reco.getDato().getColor() + "" + reco.getDato().getPrecio());
+            Element elementHijo = new Element(reco.getDato().getIdPrenda() + " " + reco.getDato().getNombre()+""+ reco.getDato().getPrecio());
 
             elementHijo.setX(String.valueOf(x) + "em");
             elementHijo.setY(String.valueOf(y) + "em");
@@ -193,6 +204,28 @@ public class ArbolBinarioNcontrolador {
             }
         }
   }
+        
+    public void guardarPrenda() {
+        try {
+            arbolN.adicionarNodo(prenda, padre);
+            prenda = new Prenda();
+            verPrenda = false;
+            pintarArbolN();
+            //arbol.sumarPrecios();
+        } catch (ArbolNException ex) {
+            JsfUtil.addErrorMessage(ex.getMessage());
+        }
+    }
+
+    public void onClickRight() {
+        String id = FacesContext.getCurrentInstance().getExternalContext()
+                .getRequestParameterMap().get("elementId");
+
+        prendaSeleccionado = id.replaceAll("frmPrendaAbb:diagrama-", "");
+
+    }
+    
+    private String prendaSeleccionado = "";
 
        public void buscarPrenda(){
         arbolN.buscar(dato);
