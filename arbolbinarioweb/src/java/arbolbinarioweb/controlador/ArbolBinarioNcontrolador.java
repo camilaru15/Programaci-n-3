@@ -12,10 +12,11 @@ import dremali.modelo.ArbolN;
 import dremali.modelo.NodoN;
 import dremali.modelo.Prenda;
 import dremali.modelo.excepciones.ArbolNException;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.DefaultDiagramModel;
@@ -28,9 +29,9 @@ import org.primefaces.model.diagram.endpoint.EndPointAnchor;
  *
  * @author camil
  */
+@SessionScoped
 @Named(value = "arbolBinarioNcontrolador")
-@Dependent
-public class ArbolBinarioNcontrolador {
+public class ArbolBinarioNcontrolador implements Serializable {
 
         private ArbolN arbolN = new ArbolN();
         private Prenda prenda = new Prenda();
@@ -92,7 +93,7 @@ public class ArbolBinarioNcontrolador {
     private void inicializar() {
         arbolN = new ArbolN();
         texto= "Arbol n ario";
-    pintarArbolN();
+        pintarArbolN();
     }
     public ArbolBinarioNcontrolador() {
     }
@@ -201,6 +202,7 @@ public class ArbolBinarioNcontrolador {
             model.addElement(elementHijo);
             for(NodoN hijo:reco.getHijos()){
             pintarArbolN(hijo,model,elementHijo, x-10, y+5);
+            x += 10;
             }
         }
   }

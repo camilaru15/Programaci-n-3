@@ -11,34 +11,47 @@
         <p:growl id="grwlErrores"/>
         
         
-            <p:diagram id="diagrama" value="#{arbolnarioControlador.model}" style="height:400px" /> 
+        <p:diagram id="diagrama" value="#{arbolBinarioNcontrolador.model}" style="height:400px" styleClass="ui-widget-content"
+                   /> 
             
         
         <h:form>
-            <p:panel header="Panel Nuevo Nodo">
-                
+            <p:panel header="Panel Nuevo Nodo">               
                <br/>
-                <p:outputLabel value="ID jefe:"/>
+                <p:outputLabel value="Id:"/>
                 <br/>
                 <p:inputText required="true" value="#{arbolBinarioNcontrolador.padre}"/>
-                <br/><br/>
-                 <p:outputLabel value="ID empleado"/>
+                <br/><br/> 
+                 <p:outputLabel value="Id prenda"/>
                  <br/>
-                 <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.idPrenda}"/>
+                 <p:inputText  value="#{arbolBinarioNcontrolador.prenda.idPrenda}"/>
                 <br/><br/>
-                 <p:outputLabel value="nombre del empleado:"/>
+                 <p:outputLabel value="Cateogiras:"/>
                  <br/>
-                 <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.nombre}"/>
+                 <p:inputText  value="#{arbolBinarioNcontrolador.prenda.nombre}"/>
                 <br/><br/>
-                 <p:outputLabel value="Sueldo del empleado:"/>
+                 <p:outputLabel value="Precio:"/>
                  <br/>
-                 <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.precio}"/>
+                 <p:inputText  value="#{arbolBinarioNcontrolador.prenda.precio}"/>
                 
                 <br/>
                 <p:commandButton ajax="false"  value="Agregar" action="#{arbolBinarioNcontrolador.guardarPrenda()}" update="@all" />
-              <br/>
-               
-                
+              <br/>               
+            </p:panel>   
+            <p:panel>
+                <h:outputText value="Prenda a Buscar: " />
+                <p:inputText required="true" value="#{arbolBinarioNcontrolador.dato}"/>
+                <p:commandButton value="Buscar" update="@all" ajax="false" action="#{arbolBinarioNcontrolador.buscarPrenda()}" />
+                <br/><br/>
+                <h:outputText value="Prenda a Borrar: " />
+                <p:inputText required="true" value="#{arbolBinarioNcontrolador.dato}"/>
+                <p:commandButton value="Borrar" update="@all" ajax="false" action="#{arbolBinarioNcontrolador.borrarPrenda()}" />                
+                <br/><br/>
+                <h:outputText value="Prenda a Cambiar: " />
+                <p:inputText required="true" value="#{arbolBinarioNcontrolador.dato}"/>
+                <p:commandButton value="Cambiar" update="@all" ajax="false" action="#{arbolBinarioNcontrolador.cambiarPrenda()}" /> 
+                <br/><br/>
+                <p:commandButton value="borrar prendas" update="@all" ajax="false" action="#{arbolBinarioNcontrolador.podar()}" />
             </p:panel>
         </h:form>
      </ui:define>
