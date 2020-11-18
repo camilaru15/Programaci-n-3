@@ -5,14 +5,17 @@
  */
 package arbolbinarioweb.controlador;
 
+import arbolbinario.modelo.ArbolBinario;
+import arbolbinario.modelo.Nodo;
 import arbolbinarioweb.controlador.util.JsfUtil;
 import dremali.modelo.ArbolN;
 import dremali.modelo.NodoN;
 import dremali.modelo.Prenda;
 import dremali.modelo.excepciones.ArbolNException;
-import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
+import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.inject.Named;
+import javax.enterprise.context.Dependent;
 import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.DefaultDiagramModel;
 import org.primefaces.model.diagram.Element;
@@ -22,21 +25,28 @@ import org.primefaces.model.diagram.endpoint.EndPointAnchor;
 
 /**
  *
- * @author Alison y Camila 
+ * @author camil
  */
 @Named(value = "arbolBinarioNcontrolador")
-@SessionScoped
-public class ArbolBinarioNcontrolador implements Serializable{
-        private DefaultDiagramModel model;
+@Dependent
+public class ArbolBinarioNcontrolador {
+ private DefaultDiagramModel model;
         
         private ArbolN arbolN = new ArbolN();
-        private Prenda dato;
-        private boolean verInOrden = false;
-        
-        private String datobuscar;
-        private int datoPromediar;
-        private int datoSumar;
-        private String textoEnviar;
+        private Prenda prenda;
+        private List<Prenda> lista;
+        private boolean verPrenda;
+        private String padre;
+        private String texto;
+        private ArbolBinario arbolFinal = new ArbolBinario();
+
+    public DefaultDiagramModel getModel() {
+        return model;
+    }
+
+    public void setModel(DefaultDiagramModel model) {
+        this.model = model;
+    }
 
     public ArbolN getArbolN() {
         return arbolN;
@@ -46,93 +56,116 @@ public class ArbolBinarioNcontrolador implements Serializable{
         this.arbolN = arbolN;
     }
 
-    public Prenda getDato() {
-        return dato;
+    public Prenda getPrenda() {
+        return prenda;
     }
 
-    public void setDato(Prenda dato) {
-        this.dato = dato;
+    public void setPrenda(Prenda prenda) {
+        this.prenda = prenda;
     }
 
-    public boolean isVerInOrden() {
-        return verInOrden;
+    public List<Prenda> getLista() {
+        return lista;
     }
 
-    public void setVerInOrden(boolean verInOrden) {
-        this.verInOrden = verInOrden;
+    public void setLista(List<Prenda> lista) {
+        this.lista = lista;
     }
 
-    public String getDatobuscar() {
-        return datobuscar;
+    public boolean isVerPrenda() {
+        return verPrenda;
     }
 
-    public void setDatobuscar(String datobuscar) {
-        this.datobuscar = datobuscar;
+    public void setVerPrenda(boolean verPrenda) {
+        this.verPrenda = verPrenda;
     }
 
-    public int getDatoPromediar() {
-        return datoPromediar;
+    public String getPadre() {
+        return padre;
     }
 
-    public void setDatoPromediar(int datoPromediar) {
-        this.datoPromediar = datoPromediar;
+    public void setPadre(String padre) {
+        this.padre = padre;
     }
 
-    public int getDatoSumar() {
-        return datoSumar;
+    public String getTexto() {
+        return texto;
     }
 
-    public void setDatoSumar(int datoSumar) {
-        this.datoSumar = datoSumar;
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+     public void pintarArbolTerminados() {
+
+        model= new DefaultDiagramModel();
+        model.setMaxConnections(-1);
+        model.setConnectionsDetachable(false);
+        StraightConnector connector = new StraightConnector();
+        connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:10}");
+        connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
+        model.setDefaultConnector(connector);
+        pintarArbolFinal(arbolFinal.getRaiz(), model, null, 30, 0);
+
     }
 
-    public String getTextoEnviar() {
-        return textoEnviar;
-    }
+    private void pintarArbolFinal(Nodo reco, DefaultDiagramModel model, Element padre, int x, int y) {
 
-    public void setTextoEnviar(String textoEnviar) {
-        this.textoEnviar = textoEnviar;
-    }
+        if (reco != null) {
+            Element elementHijo = new Element(reco.getDato());
+
+            elementHijo.setX(String.valueOf(x) + "em");
+            elementHijo.setY(String.valueOf(y) + "em");
+
+            if (padre != null) {
+                elementHijo.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
+                DotEndPoint conectorPadre = new DotEndPoint(EndPointAnchor.BOTTOM);
+                padre.addEndPoint(conectorPadre);
+                model.connect(new Connection(conectorPadre, elementHijo.getEndPoints().get(0)));
+
+            }
+
+            model.addElement(elementHijo);
+
+            pintarArbolFinal(reco.getIzquierda(), model, elementHijo, x - 20, y + 5);
+            pintarArbolFinal(reco.getDerecha(), model, elementHijo, x + 20, y + 5);
+        }
+    }   
+     
         
-    public ArbolBinarioNcontrolador(){
-    
+    @PostConstruct
+    private void inicializar() {
+        arbolN = new ArbolN();
+        texto= "Arbol n ario";
+    pintarArbolN();
     }
-    
-    public void adicionarNodo(){
-    try{
-        arbolN.adicionarNodo(dato , arbolN.getRaiz(), datobuscar);
-        JsfUtil.addSuccessMessage("El dato ha sido adicionado");
-        dato = new Prenda();
-        pintarArbolN();
-        }catch(ArbolNException ex){
-        JsfUtil.addErrorMessage(ex.getMessage());  
+    public ArbolBinarioNcontrolador() {
+    }
+        public void adicionarPrenda(){
+        try {
+        arbolN.adicionarNodo(prenda, padre);
+        prenda = new Prenda();
+        verPrenda = false;
+        pintarArbolN();      
+        } catch (ArbolNException ex){
+        JsfUtil.addErrorMessage(ex.getMessage());
         }
     }
-
-    public DefaultDiagramModel getModel() {
-        return model;
-    }
-
-    public void setModel(DefaultDiagramModel model) {
-        this.model = model;
-    }
-    
-    public void pintarArbolN(){
+   
+        public void pintarArbolN(){
         model = new DefaultDiagramModel();
         model.setMaxConnections(-1);
         model.setConnectionsDetachable(false);
         StraightConnector connector = new StraightConnector();
-        connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:6}");
+        connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:2}");
         connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
         model.setDefaultConnector(connector);
-        pintarArbolN(arbolN.getRaiz(), model, null, 50, 0);
-    }
+        pintarArbolN(arbolN.getRaiz(), model, null, 42, 0);
+        }
     
-    private void pintarArbolN(NodoN reco, DefaultDiagramModel model, Element padre, int x, int y) {
-
+        private void pintarArbolN(NodoN reco, DefaultDiagramModel model, Element padre, int x, int y){
+        
         if (reco != null) {
-            Element elementHijo = new Element(reco.getDato()+" G:"+reco.obtenerGradoNodo() +" H:"+
-                    reco.obtenerAlturaNodo());
+            Element elementHijo = new Element(reco.getDato().getIdPrenda() + " " + reco.getDato().getNombre() + " " + reco.getDato().getTalla() + "" + reco.getDato().getColor());
 
             elementHijo.setX(String.valueOf(x) + "em");
             elementHijo.setY(String.valueOf(y) + "em");
@@ -145,9 +178,32 @@ public class ArbolBinarioNcontrolador implements Serializable{
 
             }
             model.addElement(elementHijo);
-
-           /* pintarArbolN(reco.getDato(), model, elementHijo, x - 10, y + 5);*/
+            for(NodoN hijo:reco.getHijos()){
+            pintarArbolN(hijo,model,elementHijo, x-10, y+5);
+            }
         }
-    }
-    
+  }
+        
+       public void mostrarPrecios(){
+       }
+       public void buscarCategoria(){
+       }
+       public void eliminarCategoria(){
+       }
+       public void eliminarPrenda(){
+       }
+       public void cambiarCategoria(){
+       }
+       public void cambiarTalla(){
+       }
+       public void ordenarPorTalla(){
+       }
+       public void ordenarPorPrecio(){
+       }
 }
+ 
+
+    
+    
+      
+ 

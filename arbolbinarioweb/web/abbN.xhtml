@@ -4,19 +4,56 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 template="./templatemain.xhtml"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:h="http://xmlns.jcp.org/jsf/html">    
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">    
 
     <ui:define name="content"> 
         <p:growl id="grwlErrores"/>
         <p:diagram id="pnlArbol" value="#{arbolBinarioNcontrolador.model}" style="height:400px" styleClass="ui-widget-content" />
          <h:form>
              <p:panel header="Panel Nuevo Nodo" >
-               <p:outputLabel value="Dato:"/>
-                <p:inputText required="true" value="#{arbolBinarioNcontrolador.dato}"/> 
-                <p:commandButton ajax="false" value="Agregar" action="#{arbolBinarioNcontrolador.adicionarNodo()}">
-                    
-                </p:commandButton>
+                <br/>
+                <p:outputLabel value="Id Prenda:"/>
+                <p:inputText required="true" value="#{arbolBinarioNcontrolador.padre}"/>
+                <br/><br></br>
+                 <p:outputLabel value="Nombre Prenda:"/>
+                 <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.nombre}"/>
+                <br/><br></br>
+                <p:outputLabel value="Talla:"/>
+                <p:inputText id="txtTalla" value="#{arbolBinarioNcontrolador.prenda.talla}">
+                <f:selectItem itemLabel="XS" itemValue="XS"/>
+                <f:selectItem itemLabel="S" itemValue="S"/>
+                <f:selectItem itemLabel="M" itemValue="M"/>
+                <f:selectItem itemLabel="L" itemValue="L"/>
+                <f:selectItem itemLabel="XL" itemValue="XL"/>
+                </p:inputText>
+                <br/><br></br>
+                <p:outputLabel value="Color:"/>
+                <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.color}"/>
+                <br/><br></br>
+                 <p:outputLabel value="Precio:"/>
+                 <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.precio}"/>
+                 <br/><br></br>
+                 <p:commandButton ajax="false"  value="Agregar Prenda" action="#{arbolBinarioNcontrolador.adicionarPrenda()}"
+                                 update="@all" />
+              <br/>                                
              </p:panel>
+        </h:form>
+        <h:form>
+            <p:panel>
+            <p:commandButton ajax="false"  value="Mostrar Precios" action="#{arbolBinarioNcontrolador.mostrarPrecios()}" update="@all" />  
+            <p:commandButton ajax="false"  value="Ver Categoria" action="#{arbolBinarioNcontrolador.buscarCategoria()}" update="@all" />  
+            <p:commandButton ajax="false"  value="Eliminar Categoria" action="#{arbolBinarioNcontrolador.eliminarCategoria()}" update="@all" /> 
+            <p:commandButton ajax="false"  value="Eliminar Prenda" action="#{arbolBinarioNcontrolador.eliminarPrenda()}" update="@all" /> 
+            <p:commandButton ajax="false"  value="Cambiar Categoria" action="#{arbolBinarioNcontrolador.cambiarCategoria()}" update="@all" />  
+            <p:commandButton ajax="false"  value="Cambiar Talla" action="#{arbolBinarioNcontrolador.cambiarTalla()}" update="@all" />  
+            </p:panel>
+        </h:form>
+        <h:form>
+            <p:panel>
+            <p:commandButton ajax="false"  value="Ordenar por Talla" action="#{arbolBinarioNcontrolador.ordenarPorTalla()}" update="@all" />  
+            <p:commandButton ajax="false"  value="Ordenar por Precio" action="#{arbolBinarioNcontrolador.ordenarPorPrecio()}" update="@all" />  
+           </p:panel>
         </h:form>
     </ui:define>
 </ui:composition>
