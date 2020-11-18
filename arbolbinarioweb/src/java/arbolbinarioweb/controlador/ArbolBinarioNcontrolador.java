@@ -37,8 +37,18 @@ public class ArbolBinarioNcontrolador {
         private List<Prenda> lista;
         private boolean verPrenda;
         private String padre;
+        private int dato;
         private String texto;
         private ArbolBinario arbolFinal = new ArbolBinario();
+
+    public int getDato() {
+        return dato;
+    }
+
+    public void setDato(int dato) {
+        this.dato = dato;
+    }
+        
 
     public DefaultDiagramModel getModel() {
         return model;
@@ -152,20 +162,20 @@ public class ArbolBinarioNcontrolador {
     }
    
         public void pintarArbolN(){
-        model = new DefaultDiagramModel();
-        model.setMaxConnections(-1);
-        model.setConnectionsDetachable(false);
-        StraightConnector connector = new StraightConnector();
-        connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:2}");
-        connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
-        model.setDefaultConnector(connector);
-        pintarArbolN(arbolN.getRaiz(), model, null, 42, 0);
+            model = new DefaultDiagramModel();
+            model.setMaxConnections(-1);
+            model.setConnectionsDetachable(false);
+            StraightConnector connector = new StraightConnector();
+            connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:2}");
+            connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
+            model.setDefaultConnector(connector);
+            pintarArbolN(arbolN.getRaiz(), model, null, 42, 0);
         }
     
         private void pintarArbolN(NodoN reco, DefaultDiagramModel model, Element padre, int x, int y){
         
         if (reco != null) {
-            Element elementHijo = new Element(reco.getDato().getIdPrenda() + " " + reco.getDato().getNombre() + " " + reco.getDato().getTalla() + "" + reco.getDato().getColor());
+            Element elementHijo = new Element(reco.getDato().getIdPrenda() + " " + reco.getDato().getNombre()+""+ reco.getDato().getTalla() + "" + reco.getDato().getColor() + "" + reco.getDato().getPrecio());
 
             elementHijo.setX(String.valueOf(x) + "em");
             elementHijo.setY(String.valueOf(y) + "em");
@@ -183,19 +193,26 @@ public class ArbolBinarioNcontrolador {
             }
         }
   }
+
+       public void buscarPrenda(){
+        arbolN.buscar(dato);
+        pintarArbolN();
+       }      
+
+       public void borrarPrenda(){
+         arbolN.borrar(dato);
+         pintarArbolN();
+       }      
+       public void cambiarPrenda(){
+        arbolN.cambiar();
+          pintarArbolN();
+       }
+       
+       public void podar(){
+           arbolN.podar();
+           pintarArbolN();
+        }
         
-       public void mostrarPrecios(){
-       }
-       public void buscarCategoria(){
-       }
-       public void eliminarCategoria(){
-       }
-       public void eliminarPrenda(){
-       }
-       public void cambiarCategoria(){
-       }
-       public void cambiarTalla(){
-       }
        public void ordenarPorTalla(){
        }
        public void ordenarPorPrecio(){

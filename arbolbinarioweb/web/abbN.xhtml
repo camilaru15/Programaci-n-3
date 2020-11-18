@@ -11,29 +11,34 @@
         <p:growl id="grwlErrores"/>
         <p:diagram id="pnlArbol" value="#{arbolBinarioNcontrolador.model}" style="height:400px" styleClass="ui-widget-content" />
          <h:form>
-             <p:panel header="Panel Nuevo Nodo" >
-                <br/>
+             <p:panel header="Panel Añadir Prendas" >
                 <p:outputLabel value="Id Prenda:"/>
-                <p:inputText required="true" value="#{arbolBinarioNcontrolador.padre}"/>
-                <br/><br></br>
-                 <p:outputLabel value="Nombre Prenda:"/>
-                 <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.nombre}"/>
-                <br/><br></br>
-                <p:outputLabel value="Talla:"/>
-                <p:inputText id="txtTalla" value="#{arbolBinarioNcontrolador.prenda.talla}">
-                <f:selectItem itemLabel="XS" itemValue="XS"/>
-                <f:selectItem itemLabel="S" itemValue="S"/>
-                <f:selectItem itemLabel="M" itemValue="M"/>
-                <f:selectItem itemLabel="L" itemValue="L"/>
-                <f:selectItem itemLabel="XL" itemValue="XL"/>
-                </p:inputText>
-                <br/><br></br>
+                <br/>
+                <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.idPrenda}"/>
+                <br/><br/>
+                 <p:outputLabel value="Tipo de prenda:"/>
+                <br/>
+                <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.nombre}"/>
+                <br/><br/>
+               <h:panelGrid ><font></font>
+               <p:outputLabel value="Talla:" /><font></font>
+               <p:selectOneRadio id="console" value="#{arbolBinarioNcontrolador.prenda.talla}"><font></font>
+                     <f:selectItem itemLabel="XS" itemValue="XS" /><font></font>
+                     <f:selectItem itemLabel="S" itemValue="S" /><font></font>
+                     <f:selectItem itemLabel="M" itemValue="M" /><font></font>
+                     <f:selectItem itemLabel="L" itemValue="L" /><font></font>
+                     <f:selectItem itemLabel="XL" itemValue="XL" /><font></font>
+               </p:selectOneRadio><font></font>
+               </h:panelGrid>
+                <br/><br/>
                 <p:outputLabel value="Color:"/>
+                <br/>
                 <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.color}"/>
-                <br/><br></br>
+                <br/><br/>
                  <p:outputLabel value="Precio:"/>
+                 <br/>
                  <p:inputText required="true" value="#{arbolBinarioNcontrolador.prenda.precio}"/>
-                 <br/><br></br>
+                 <br/><br/>
                  <p:commandButton ajax="false"  value="Agregar Prenda" action="#{arbolBinarioNcontrolador.adicionarPrenda()}"
                                  update="@all" />
               <br/>                                
@@ -41,12 +46,9 @@
         </h:form>
         <h:form>
             <p:panel>
-            <p:commandButton ajax="false"  value="Mostrar Precios" action="#{arbolBinarioNcontrolador.mostrarPrecios()}" update="@all" />  
-            <p:commandButton ajax="false"  value="Ver Categoria" action="#{arbolBinarioNcontrolador.buscarCategoria()}" update="@all" />  
-            <p:commandButton ajax="false"  value="Eliminar Categoria" action="#{arbolBinarioNcontrolador.eliminarCategoria()}" update="@all" /> 
-            <p:commandButton ajax="false"  value="Eliminar Prenda" action="#{arbolBinarioNcontrolador.eliminarPrenda()}" update="@all" /> 
-            <p:commandButton ajax="false"  value="Cambiar Categoria" action="#{arbolBinarioNcontrolador.cambiarCategoria()}" update="@all" />  
-            <p:commandButton ajax="false"  value="Cambiar Talla" action="#{arbolBinarioNcontrolador.cambiarTalla()}" update="@all" />  
+            <p:commandButton ajax="false"  value="Ver Prendas" action="#{arbolBinarioNcontrolador.buscarPrenda()}" update="@all" />  
+            <p:commandButton ajax="false"  value="Eliminar Prendas" action="#{arbolBinarioNcontrolador.podar()}" update="@all" /> 
+            <p:commandButton ajax="false"  value="Cambiar Prenda" action="#{arbolBinarioNcontrolador.cambiarPrenda()}" update="@all" />  
             </p:panel>
         </h:form>
         <h:form>
